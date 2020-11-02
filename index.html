@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Modifier une zone de test</title>
+		<meta charset= "utf-8" />
+		<style type="text/css">
+			body
+			{
+				background-color : #002233;
+				color:#ffffff;
+				font: 1.2em "Calibri", sans-serif;
+			}
+
+			main
+			{
+				margin: 5%;
+				margin-top: 0;
+				padding: 1%;
+				border-right: black solid 1px;
+				border-left: black solid 1px;
+				border-color: #48545d;
+				background-color : #293744;
+			}
+
+			footer
+			{
+				display:flex;
+				justify-content: center;
+			}
+
+			h1
+			{
+				margin-left: 5%;
+			}
+			.centre
+			{
+				margin-left: auto;
+				margin-right: auto;
+				text-align:center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 id="zone_test" class="centre">Zone de test</h1>
+
+
+		<script>
+			formData = [{name:"backgroundColor",type:"range",min:0,max:255},
+						{name:"padding",type:"range",min:0,max:30},
+						{name:"width",type:"range",min:0,max:200},
+						{name:"height",type:"range",min:0,max:200},
+						{name:"border-radius",type:"range",min:0,max:30},
+						{name:"rotation",type:"range",min:0,max:180}];
+			
+				function createLabel(name,parent) {
+				label = document.createElement('label');
+				label.setAttribute('for',name);
+				node = document.createTextNode(name + " : ");
+				label.appendChild(node);
+
+				parent.appendChild(label);
+			}
+
+			function createInput(element) {
+				input = document.createElement('input');
+				input.setAttribute('id',element.name);
+				input.setAttribute('name',element.name);
+				input.setAttribute('type',element.type);
+				input.setAttribute('required','true');
+				if (element.type == 'range') {
+				input.setAttribute('min',element.min);
+				input.setAttribute('max',element.max);
+				} 
+				return input;
+			}
+			
+			function generateForm(array) {
+				//form
+				form = document.createElement('form');
+				form.setAttribute('action','');
+				form.setAttribute('method','get');
+				form.setAttribute('id','form');
+				form.setAttribute("class","centre");
+
+				//Div form group pour CSS
+				formGroup = document.createElement('div');
+				formGroup.setAttribute('class','form-group');
+
+				form.appendChild(formGroup);
+
+
+				Object.values(formData).forEach( element => {
+					div  = document.createElement('div');
+					div.setAttribute('class','form-element');
+					
+					createLabel(element.name,div);
+					input = createInput(element);
+					div.appendChild(input);
+					formGroup.appendChild(div);
+					document.body.appendChild(form);
+				});
+			}
+			
+			generateForm(formData);
+
+			function changeZone(event) {
+				switch (this.name) {
+					case 'backgroundColor':
+						zone_test.style.backgroundColor = "rgb("+this.value+","+this.value+","+this.value+")";
+						break;
+	
+					case 'rotation':
+						zone_test.style.transform = "rotate("+this.value+"deg)";
+						break;
+					default:
+						zone_test.style.setProperty(this.name,this.value+"px");
+						break;
+				}
+			}
+
+		var inputs = document.getElementsByTagName('input');
+
+		for (i=0;i<inputs.length;i++) {
+			inputs[i].addEventListener('input',changeZone,false);
+		}
+
+		zone_test = document.getElementById('zone_test');
+		</script>
+	</body>
+</html>
