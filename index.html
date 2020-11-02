@@ -10,7 +10,6 @@
 				color:#ffffff;
 				font: 1.2em "Calibri", sans-serif;
 			}
-
 			main
 			{
 				margin: 5%;
@@ -21,16 +20,10 @@
 				border-color: #48545d;
 				background-color : #293744;
 			}
-
 			footer
 			{
 				display:flex;
 				justify-content: center;
-			}
-
-			h1
-			{
-				margin-left: 5%;
 			}
 			.centre
 			{
@@ -39,20 +32,17 @@
 				text-align:center;
 			}
 		</style>
-	</head>
-	<body>
-		<h1 id="zone_test" class="centre">Zone de test</h1>
-
-
-		<script>
-			formData = [{name:"backgroundColor",type:"range",min:0,max:255},
-						{name:"padding",type:"range",min:0,max:30},
-						{name:"width",type:"range",min:0,max:200},
-						{name:"height",type:"range",min:0,max:200},
-						{name:"border-radius",type:"range",min:0,max:30},
-						{name:"rotation",type:"range",min:0,max:180}];
+		<script type="text/javascript">
+			formulaire = [{name:"backgroundColor",type:"range",min:0,max:255},
+						{name:"padding",type:"range",min:0,max:35},
+						{name:"width",type:"range",min:0,max:300},
+						{name:"height",type:"range",min:0,max:300},
+						{name:"border-radius",type:"range",min:0,max:35},
+						{name:"rotation",type:"range",min:0,max:360}];
 			
-				function createLabel(name,parent) {
+			function creationLabel(name,parent)
+			//BUT : Créet un label.
+			{
 				label = document.createElement('label');
 				label.setAttribute('for',name);
 				node = document.createTextNode(name + " : ");
@@ -61,7 +51,9 @@
 				parent.appendChild(label);
 			}
 
-			function createInput(element) {
+			function creationInput(element)
+			//BUT : Créer un input.
+			{
 				input = document.createElement('input');
 				input.setAttribute('id',element.name);
 				input.setAttribute('name',element.name);
@@ -74,7 +66,9 @@
 				return input;
 			}
 			
-			function generateForm(array) {
+			function generationForm(array)
+			//BUT : Générer le formulaire à partir du tableau.
+			{
 				//form
 				form = document.createElement('form');
 				form.setAttribute('action','');
@@ -89,24 +83,29 @@
 				form.appendChild(formGroup);
 
 
-				Object.values(formData).forEach( element => {
+				Object.values(formulaire).forEach( element =>
+				{
 					div  = document.createElement('div');
 					div.setAttribute('class','form-element');
 					
-					createLabel(element.name,div);
-					input = createInput(element);
+					creationLabel(element.name,div);
+					input = creationInput(element);
+					input.addEventListener('input',eventChange,false);
 					div.appendChild(input);
 					formGroup.appendChild(div);
 					document.body.appendChild(form);
 				});
 			}
 			
-			generateForm(formData);
-
-			function changeZone(event) {
-				switch (this.name) {
+			function eventChange(event)
+			//BUT : Générer les évènements des inputs.
+			{
+				let zone_test=document.getElementById("zone_test");
+				switch (this.name)
+				{
 					case 'backgroundColor':
 						zone_test.style.backgroundColor = "rgb("+this.value+","+this.value+","+this.value+")";
+						console.log("prout");
 						break;
 	
 					case 'rotation':
@@ -117,14 +116,22 @@
 						break;
 				}
 			}
-
-		var inputs = document.getElementsByTagName('input');
-
-		for (i=0;i<inputs.length;i++) {
-			inputs[i].addEventListener('input',changeZone,false);
-		}
-
-		zone_test = document.getElementById('zone_test');
+			
+			function init()
+			//BUT : Gérer l'initialisation de la page.
+			{
+				let zone_test = document.createElement("h1");
+				let monTitre = document.createTextNode("Zone de test");
+				zone_test.appendChild(monTitre);
+				zone_test.setAttribute("class","centre");
+				zone_test.setAttribute("id","zone_test");
+				zone_test.style.height = "150px";
+				zone_test.style.width = "150px";
+				document.getElementById('body').appendChild(zone_test);
+				generationForm(formulaire);
+			}
 		</script>
+	</head>
+	<body onload="init()" id="body">
 	</body>
 </html>
